@@ -1,8 +1,11 @@
+import RegisterForm from '@/components/auth/RegisterForm';
+import { Container } from '@/components/layout';
+
 const RegisterPage = () => {
   return (
-    <div>
-      <h1>RegisterPage</h1>
-    </div>
+    <Container>
+      <RegisterForm />
+    </Container>
   );
 };
 

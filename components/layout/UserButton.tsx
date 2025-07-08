@@ -1,3 +1,5 @@
+'use client';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +10,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, Pencil, Shield, User, UserRound } from 'lucide-react';
 import { FaRegBookmark } from 'react-icons/fa';
+import { signOut } from 'next-auth/react';
 
 const UserButton = () => {
   return (
@@ -46,7 +49,10 @@ const UserButton = () => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <button className='flex items-center gap-2'>
+          <button
+            onClick={() => signOut()}
+            className='flex items-center gap-2'
+          >
             <LogOut size={18} /> Sign Out
           </button>
         </DropdownMenuItem>

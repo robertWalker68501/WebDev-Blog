@@ -1,8 +1,11 @@
+import { Container } from '@/components/layout';
+import LoginForm from '@/components/auth/LoginForm';
+
 const LoginPage = () => {
   return (
-    <div>
-      <h1>LoginPage</h1>
-    </div>
+    <Container>
+      <LoginForm />
+    </Container>
   );
 };
 
