@@ -4,6 +4,10 @@ import { RegisterSchema, RegisterSchemaType } from '@/schemas/RegisterSchema';
 import bcrypt from 'bcryptjs';
 import { db } from '@/lib/db';
 import { getUserByEmail } from '@/lib/user';
+import {
+  generateEmailVerificationToken,
+  sendEmailVerificationToken,
+} from '@/lib/emailVerification';
 
 export const signUp = async (values: RegisterSchemaType) => {
   // Validate the input fields using the RegisterSchema
@@ -34,5 +38,18 @@ export const signUp = async (values: RegisterSchemaType) => {
     },
   });
 
-  return { success: 'User registered successfully' };
+  const emailVerificationToken = await generateEmailVerificationToken(email);
+  const { error } = await sendEmailVerificationToken(
+    emailVerificationToken.email,
+    emailVerificationToken.token
+  );
+
+  if (error) {
+    return {
+      error:
+        'Something went wrong sending the verification email. Try to login to resend the verification email.',
+    };
+  }
+
+  return { success: 'Verification email sent' };
 };

@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils';
 import { Footer, Navbar } from '@/components/layout';
 
 import { ThemeProvider } from 'next-themes';
+import { auth } from '@/auth';
+import { SessionProvider } from 'next-auth/react';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -21,33 +23,37 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const session = await auth();
+
   return (
-    <html
-      lang='en'
-      suppressHydrationWarning
-    >
-      <body
-        className={cn(
-          'flex min-h-screen flex-col px-2 antialiased',
-          poppins.variable
-        )}
+    <SessionProvider session={session}>
+      <html
+        lang='en'
+        suppressHydrationWarning
       >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
+        <body
+          className={cn(
+            'flex min-h-screen flex-col px-2 antialiased',
+            poppins.variable
+          )}
         >
-          <Navbar />
-          <main className='flex-grow'>{children}</main>
-          <Footer />
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            <main className='flex-grow'>{children}</main>
+            <Footer />
+          </ThemeProvider>
+        </body>
+      </html>
+    </SessionProvider>
   );
 }
