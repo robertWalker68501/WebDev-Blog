@@ -8,6 +8,7 @@ import { Footer, Navbar } from '@/components/layout';
 import { ThemeProvider } from 'next-themes';
 import { auth } from '@/auth';
 import { SessionProvider } from 'next-auth/react';
+import { EdgeStoreProvider } from '@/lib/edgestore';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -31,29 +32,31 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <SessionProvider session={session}>
-      <html
-        lang='en'
-        suppressHydrationWarning
-      >
-        <body
-          className={cn(
-            'flex min-h-screen flex-col px-2 antialiased',
-            poppins.variable
-          )}
+    <EdgeStoreProvider>
+      <SessionProvider session={session}>
+        <html
+          lang='en'
+          suppressHydrationWarning
         >
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
+          <body
+            className={cn(
+              'flex min-h-screen flex-col px-2 antialiased',
+              poppins.variable
+            )}
           >
-            <Navbar />
-            <main className='flex-grow'>{children}</main>
-            <Footer />
-          </ThemeProvider>
-        </body>
-      </html>
-    </SessionProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Navbar />
+              <main className='flex-grow'>{children}</main>
+              <Footer />
+            </ThemeProvider>
+          </body>
+        </html>
+      </SessionProvider>
+    </EdgeStoreProvider>
   );
 }
